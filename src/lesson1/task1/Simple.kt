@@ -65,7 +65,7 @@ fun main() {
  * Пользователь задает время в часах, минутах и секундах, например, 8:20:35.
  * Рассчитать время в секундах, прошедшее с начала суток (30035 в данном случае).
  */
-fun seconds(hours: Int, minutes: Int, seconds: Int): Int = TODO()
+fun seconds(hours: Int, minutes: Int, seconds: Int): Int = (hours * 60 * 60) + minutes * 60 + seconds
 
 /**
  * Тривиальная (1 балл)
@@ -74,7 +74,7 @@ fun seconds(hours: Int, minutes: Int, seconds: Int): Int = TODO()
  * Определить длину того же отрезка в метрах (в данном случае 18.98).
  * 1 сажень = 3 аршина = 48 вершков, 1 вершок = 4.445 см.
  */
-fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double = TODO()
+fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double = ((sagenes * 48 + arshins * 16 + vershoks) * 4.445) / 100
 
 /**
  * Тривиальная (1 балл)
@@ -82,7 +82,7 @@ fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double = TODO()
  * Пользователь задает угол в градусах, минутах и секундах (например, 36 градусов 14 минут 35 секунд).
  * Вывести значение того же угла в радианах (например, 0.63256).
  */
-fun angleInRadian(deg: Int, min: Int, sec: Int): Double = TODO()
+fun angleInRadian(deg: Int, min: Int, sec: Int): Double = (deg + ((min + sec / 60.0) / 60.0)) * (PI / 180.0)
 
 /**
  * Тривиальная (1 балл)
@@ -107,7 +107,12 @@ fun thirdDigit(number: Int): Int = TODO()
  * прибыл на станцию назначения в h2 часов m2 минут того же дня (например в 13:01).
  * Определите время поезда в пути в минутах (в данном случае 216).
  */
-fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minutesArrive: Int): Int = TODO()
+fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minutesArrive: Int): Int
+{
+    val minsDepart = hoursDepart * 60 + minutesDepart
+    val minsArrive = hoursArrive * 60 + minutesArrive
+    return (minsArrive - minsDepart)
+}
 
 /**
  * Простая (2 балла)
@@ -124,4 +129,21 @@ fun accountInThreeYears(initial: Int, percent: Int): Double = TODO()
  * Пользователь задает целое трехзначное число (например, 478).
  * Необходимо вывести число, полученное из заданного перестановкой цифр в обратном порядке (например, 874).
  */
-fun numberRevert(number: Int): Int = TODO()
+fun numberRevert(number: Int): Int
+{
+    var res: Int = 0
+    val num1 = (number % 100) % 10
+    res += num1 * 100;
+    val num2 = (number / 10) % 10
+    res += num2 * 10;
+    val num3 = number / 100
+    res += num3;
+    return res
+    /* var tmp = number
+    print("${(tmp % 100) % 10}")
+    tmp /= 10
+    print("${tmp % 10}")
+    tmp /= 10;
+    print("${tmp / 1}")  //--Ответ верный, тестер не засчитывает. UDP: В формулировке задания написано "вывести", когда на самом деле имеется ввиду "вернуть"-- */
+
+}
