@@ -68,7 +68,13 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String = TODO()
+fun ageDescription(age: Int): String = when {
+    age in 11..20 -> "$age лет"
+    age % 10 == 1 && age != 11 && age != 111 -> "$age год"
+    age % 10 <= 4 && age != 111 -> "$age года"
+    age <= 20 || age % 10 == 0 || age > 104 -> "$age лет"
+    else -> "некорректное значение $age"
+}
 
 /**
  * Простая (2 балла)
@@ -81,7 +87,33 @@ fun timeForHalfWay(
     t1: Double, v1: Double,
     t2: Double, v2: Double,
     t3: Double, v3: Double
-): Double = TODO()
+): Double
+{
+    var halfLen: Double = (t1 * v1 + t2 * v2 + t3 * v3) / 2
+    var time: Double = 0.0
+    if (t1 * v1 < halfLen) {
+        time += t1
+        halfLen -= t1 * v1
+    } else {
+        time += halfLen / v1
+        return time
+    }
+    if (t2 * v2 < halfLen) {
+        time += t2
+        halfLen -= t2 * v2
+    } else {
+        time += halfLen / v2
+        return time
+    }
+    if (t3 * v3 < halfLen) {
+        time += t3
+        halfLen -= t3 * v3
+    } else {
+        time += halfLen / v3
+        return time
+    }
+    return 0.0
+}
 
 /**
  * Простая (2 балла)
@@ -122,7 +154,13 @@ fun rookOrBishopThreatens(
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
+fun triangleKind(a: Double, b: Double, c: Double) {
+    /*val tmp = max(max(a, b), max(b, c))
+    b * b < a * a + c * c -> 0
+    a * a == b * b + c * c -> 1
+    a * a > b * b + c * c -> 2
+    else -> -1*/
+}
 
 /**
  * Средняя (3 балла)

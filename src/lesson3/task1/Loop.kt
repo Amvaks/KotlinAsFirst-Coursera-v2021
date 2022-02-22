@@ -2,6 +2,7 @@
 
 package lesson3.task1
 
+import kotlin.math.min
 import kotlin.math.sqrt
 
 // Урок 3: циклы
@@ -80,21 +81,47 @@ fun digitNumber(n: Int): Int = TODO()
  * Найти число Фибоначчи из ряда 1, 1, 2, 3, 5, 8, 13, 21, ... с номером n.
  * Ряд Фибоначчи определён следующим образом: fib(1) = 1, fib(2) = 1, fib(n+2) = fib(n) + fib(n+1)
  */
-fun fib(n: Int): Int = TODO()
+fun fib(n: Int): Int
+{
+    var numb: Int = 0
+    when (n) {
+        0 -> return 0
+        1, 2 -> return 1
+        //0 -> return 0
+        else -> numb = fib(n - 1) + fib(n - 2)
+    }
+    return numb
+}
 
 /**
  * Простая (2 балла)
  *
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
-fun minDivisor(n: Int): Int = TODO()
+fun minDivisor(n: Int): Int
+{
+    for (i in 2..n) {
+        if (n % i == 0)
+            return i
+    }
+    return 0
+}
 
 /**
  * Простая (2 балла)
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int = TODO()
+fun maxDivisor(n: Int): Int
+{
+    var i: Int = n - 1
+    while (i > 0) {
+        if (n % i == 0)
+            return i
+        i--
+    }
+    return 0
+}
 
 /**
  * Простая (2 балла)
@@ -129,7 +156,13 @@ fun lcm(m: Int, n: Int): Int = TODO()
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = TODO()
+fun isCoPrime(m: Int, n: Int): Boolean {
+    for (i in 2..min(m, n)) {
+        if (m % i == 0 && n % i == 0)
+            return false
+    }
+    return true
+}
 
 /**
  * Средняя (3 балла)
@@ -149,7 +182,18 @@ fun revert(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun isPalindrome(n: Int): Boolean = TODO()
+fun isPalindrome(n: Int): Boolean
+{
+    var num: Int = 0
+    var copy: Int = n
+    while (copy > 0) {
+        num = num * 10 + (copy % 10)
+        copy /= 10
+    }
+    if (num == n)
+        return true
+    return false
+}
 
 /**
  * Средняя (3 балла)
