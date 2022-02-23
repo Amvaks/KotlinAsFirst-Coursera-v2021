@@ -4,6 +4,7 @@ package lesson4.task1
 
 import lesson1.task1.discriminant
 import kotlin.math.sqrt
+import kotlin.math.pow
 
 // Урок 4: списки
 // Максимальное количество баллов = 12
@@ -120,14 +121,31 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double = TODO()
+fun abs(v: List<Double>): Double {
+    var res: Double = 0.0
+    v.forEach{
+        res += it * it
+    }
+    res = sqrt(res)
+    return res
+}
 
 /**
  * Простая (2 балла)
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double = TODO()
+fun mean(list: List<Double>): Double {
+    var res: Double = 0.0
+    var a: Double = 0.0
+    list.forEach {
+        res += it
+        a += 1.0
+    }
+    if (res == 0.0)
+        return 0.0
+    return (res / a)
+}
 
 /**
  * Средняя (3 балла)
@@ -137,7 +155,22 @@ fun mean(list: List<Double>): Double = TODO()
  *
  * Обратите внимание, что данная функция должна изменять содержание списка list, а не его копии.
  */
-fun center(list: MutableList<Double>): MutableList<Double> = TODO()
+fun center(list: MutableList<Double>): MutableList<Double> {
+    var res: Double = 0.0
+    var a: Double = 0.0
+    var size: Int = list.size - 1
+    if (list.isEmpty())
+        return list
+    list.forEach {
+        res += it
+        a += 1.0
+    }
+    res /= a
+    for (i in 0..size) {
+        list[i.toInt()] -= res
+    }
+    return list
+}
 
 /**
  * Средняя (3 балла)
@@ -217,8 +250,14 @@ fun convertToString(n: Int, base: Int): String = TODO()
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
-
+fun decimal(digits: List<Int>, base: Int): Int {
+    var res: Int = 0
+    var mn: Int = base
+    var index: Int = digits.count() - 1
+    for (i in index downTo 0)
+        res += digits[i] * base.toFloat().pow(index - i).toInt()
+    return res
+}
 /**
  * Сложная (4 балла)
  *
@@ -241,8 +280,78 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
-
+fun roman(n: Int): String
+{
+    var tmp: Int = 0
+    var copy: Int = n
+    var res: String = ""
+    if (copy / 1000 > 0) {
+        tmp = copy / 1000
+        for (i in 0 until tmp)
+            res += "M"
+        copy -= 1000 * tmp
+    }
+    /*if (copy / 500 > 0) {
+        tmp = copy / 500
+        for (i in 0 until tmp)
+            res += "D"
+        copy -= 500 * tmp
+    }*/
+    if (copy / 100 > 0) {
+        tmp = copy / 100
+        if (tmp == 9)
+            res += "CM"
+        else if (tmp >= 5) {
+            res += "D"
+            for (i in 0 until tmp - 5)
+                res += "C"
+        }
+        else if (tmp == 4)
+            res += "CD"
+        else
+            for (i in 0 until tmp)
+                res += "C"
+        copy -= 100 * tmp
+    }
+    /*if (copy / 50 > 0) {
+        tmp = copy / 50
+        for (i in 0 until tmp)
+            res += "L"
+        copy -= 50 * tmp
+    }*/
+    if (copy / 10 > 0) {
+        tmp = copy / 10
+        if (tmp == 9)
+            res += "XC"
+        else if (tmp >= 5) {
+            res += "L"
+            for (i in 0 until tmp - 5)
+                res += "X"
+        }
+        else if (tmp == 4)
+            res += "XL"
+        else
+            for (i in 0 until tmp)
+                res += "X"
+        copy -= 10 * tmp
+    }
+    if (copy > 0) {
+        tmp = copy
+        if (tmp == 9)
+            res += "IX"
+        else if (tmp >= 5) {
+            res += "V"
+            for (i in 0 until tmp - 5)
+                res += "I"
+        }
+        else if (tmp == 4)
+            res += "IV"
+        else
+            for (i in 0 until tmp)
+                res += "I"
+    }
+    return res
+}
 /**
  * Очень сложная (7 баллов)
  *

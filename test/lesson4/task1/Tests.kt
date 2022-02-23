@@ -201,8 +201,8 @@ class Tests {
     @Test
     @Tag("3")
     fun decimal() {
-        assertEquals(1, decimal(listOf(1), 2))
         assertEquals(100, decimal(listOf(1, 2, 1, 0), 4))
+        assertEquals(1, decimal(listOf(1), 2))
         assertEquals(250, decimal(listOf(1, 3, 12), 14))
         assertEquals(1000, decimal(listOf(2, 14, 12), 19))
     }
@@ -221,10 +221,10 @@ class Tests {
     @Test
     @Tag("5")
     fun roman() {
-        assertEquals("I", roman(1))
         assertEquals("MMM", roman(3000))
-        assertEquals("MCMLXXVIII", roman(1978))
+        assertEquals("I", roman(1))
         assertEquals("DCXCIV", roman(694))
+        assertEquals("MCMLXXVIII", roman(1978))
         assertEquals("XLIX", roman(49))
     }
 
