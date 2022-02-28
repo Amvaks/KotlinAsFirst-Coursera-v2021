@@ -68,12 +68,12 @@ fun deleteMarked(inputName: String, outputName: String) {
     for (line in File(inputName).readLines()) {
         if (line.isEmpty()) {
             writer.newLine()
-            writer.newLine()
             continue
         }
         if (line[0] == '_')
             continue
         writer.write(line)
+        writer.newLine()
         if (line[line.length - 1].toChar() == null)
             writer.newLine()
     }
@@ -89,20 +89,18 @@ fun deleteMarked(inputName: String, outputName: String) {
  * Регистр букв игнорировать, то есть буквы е и Е считать одинаковыми.
  *
  */
-fun countSubstrings(
-    inputName: String,
-    substrings: List<String>
-): Map<String, Int> {
-    val res = mutableMapOf<String, Int>()
+fun countSubstrings(inputName: String, substrings: List<String>): Map<String, Int> {
+    val listOfSubstrings = substrings.toSet().toList() //почему имеено с ".toSet().toList()"?
+    val result = mutableMapOf<String, Int>()
     val text = File(inputName).readText().lowercase(Locale.getDefault())
-    for (i in substrings.indices) {
-        if (!res.contains(substrings[i]))
-            res[substrings[i]] = 0
+    for (i in listOfSubstrings.indices) {
+        if (!result.contains(listOfSubstrings[i]))
+            result[listOfSubstrings[i]] = 0
         for (j in text.indices)
-            if (text.startsWith(substrings[i].lowercase(Locale.getDefault()), j))
-                res[substrings[i]] = res[substrings[i]]!! + 1
+            if (text.startsWith(listOfSubstrings[i].lowercase(Locale.getDefault()), j))
+                result[listOfSubstrings[i]] = result[listOfSubstrings[i]]!! + 1
     }
-    return res
+    return result
 }
 
 /**
@@ -119,7 +117,26 @@ fun countSubstrings(
  *
  */
 fun sibilants(inputName: String, outputName: String) {
-    TODO()
+    val dictOfLetters = listOf('ж', 'ч', 'ш', 'щ')
+    val dictOfReplaceable = mapOf('ы' to 'и', 'я' to 'а', 'ю' to 'у')
+    val outputStream = File(outputName).bufferedWriter()
+    for (line in File(inputName).readLines()) {
+        var l = ""
+        var temp = ""
+        for (i in line.indices)
+            if (temp == "") {
+                if ((line[i].lowercaseChar() in dictOfLetters) && (i != line.length - 1))
+                    if (line[i + 1] in dictOfReplaceable.keys)
+                        temp = dictOfReplaceable[line[i + 1]].toString()
+                    else if (line[i + 1].lowercaseChar() in dictOfReplaceable.keys)
+                        temp = dictOfReplaceable[line[i + 1].lowercaseChar()].toString().uppercase(Locale.getDefault())
+                l += line[i].toString() + temp
+            } else
+                temp = ""
+        outputStream.write(l)
+        outputStream.newLine()
+    }
+    outputStream.close()
 }
 
 /**

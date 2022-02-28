@@ -165,7 +165,6 @@ fun bestHighJump(jumps: String): Int {
                 } else
                     return -1
             }
-
         }
     }
     return res

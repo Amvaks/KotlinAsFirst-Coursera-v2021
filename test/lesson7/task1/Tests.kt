@@ -60,6 +60,14 @@ Basic, Ruby, Swift.
     @Test
     @Tag("8")
     fun deleteMarked() {
+        deleteMarked("input/MyTest1.txt", "temp.txt")
+        assertFileContent(
+            "temp.txt",
+            """аааааааааб
+аабг,
+            """.trimIndent()
+        )
+        File("temp.txt").delete()
         deleteMarked("input/delete_in1.txt", "temp.txt")
         assertFileContent(
             "temp.txt",
