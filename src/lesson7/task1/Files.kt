@@ -187,8 +187,43 @@ fun centerFile(inputName: String, outputName: String) {
  * 7) В самой длинной строке каждая пара соседних слов должна быть отделена В ТОЧНОСТИ одним пробелом
  * 8) Если входной файл удовлетворяет требованиям 1-7, то он должен быть в точности идентичен выходному файлу
  */
-fun alignFileByWidth(inputName: String, outputName: String) {
-    TODO()
+fun fixer(lineFixed: String, maxLineLength: Int?): String {
+    val words = lineFixed.split(" ").filter { it != "" }.toMutableList()
+    var currentLength = words.joinToString("").length
+    var wordIndex = 0
+
+    while (currentLength < maxLineLength!!) {
+        if (wordIndex == words.lastIndex) wordIndex = 0
+        words[wordIndex] += " "
+        wordIndex++
+        currentLength++
+    }
+
+    return words.joinToString("")
+}
+
+fun alignFileByWidth(inputName: String, outputName: String) {  //+функция выше, изучить
+    val outputStream = File(outputName).bufferedWriter()
+    val text = File(inputName).readLines()
+    val maxLineLength = text.maxByOrNull { it.trim().length }?.trim()?.length
+
+    for (line in text) {
+        if (line.isEmpty()) {
+            outputStream.newLine()
+            continue
+        }
+
+        val lineFixed = line.trim()
+        if (lineFixed == line.filter { it != ' ' }) {
+            outputStream.write(lineFixed)
+            outputStream.newLine()
+        } else {
+            outputStream.write(fixer(lineFixed, maxLineLength))
+            outputStream.newLine()
+        }
+
+    }
+    outputStream.close()
 }
 
 /**
@@ -211,7 +246,9 @@ fun alignFileByWidth(inputName: String, outputName: String) {
  * Ключи в ассоциативном массиве должны быть в нижнем регистре.
  *
  */
-fun top20Words(inputName: String): Map<String, Int> = TODO()
+fun top20Words(inputName: String): Map<String, Int> {
+    TODO()
+}
 
 /**
  * Средняя (14 баллов)
@@ -248,8 +285,15 @@ fun top20Words(inputName: String): Map<String, Int> = TODO()
  *
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
-fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: String) {
-    TODO()
+fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: String) { //изучить
+    val newDictionary = mutableMapOf<Char, String>()
+    for ((key, value) in dictionary) newDictionary[key.toLowerCase()] = value.toLowerCase()
+    File(outputName).bufferedWriter().use {
+        for (char in File(inputName).readText()) {
+            val changeString = newDictionary[char.toLowerCase()] ?: char.toString()
+            it.write(if(char.isUpperCase()) changeString.capitalize() else changeString)
+        }
+    }
 }
 
 /**
