@@ -116,7 +116,7 @@ fun countSubstrings(inputName: String, substrings: List<String>): Map<String, In
  * Исключения (жюри, брошюра, парашют) в рамках данного задания обрабатывать не нужно
  *
  */
-fun sibilants(inputName: String, outputName: String) {
+fun sibilants(inputName: String, outputName: String) { //изучить получше
     val dictOfLetters = listOf('ж', 'ч', 'ш', 'щ')
     val dictOfReplaceable = mapOf('ы' to 'и', 'я' to 'а', 'ю' to 'у')
     val outputStream = File(outputName).bufferedWriter()
@@ -276,8 +276,23 @@ fun transliterate(inputName: String, dictionary: Map<Char, String>, outputName: 
  *
  * Обратите внимание: данная функция не имеет возвращаемого значения
  */
-fun chooseLongestChaoticWord(inputName: String, outputName: String) {
-    TODO()
+fun chooseLongestChaoticWord(inputName: String, outputName: String) { //изучить получше
+    val maxChaoticWords = StringBuilder()
+    var max = 0
+    for (line in File(inputName).readLines()) {
+        val l = mutableSetOf<Char>()
+        for (i in line) {
+            l.add(i.toLowerCase())
+            if (l.size == line.length && line.length > max) {
+                maxChaoticWords.clear().append(line)
+                max = line.length
+            } else if (l.size == line.length && line.length == max)
+                maxChaoticWords.append(", $line")
+        }
+    }
+    val outputStream = File(outputName).bufferedWriter()
+    outputStream.write(maxChaoticWords.toString())
+    outputStream.close()
 }
 
 /**
@@ -325,8 +340,70 @@ Suspendisse <s>et elit in enim tempus iaculis</s>.
  *
  * (Отступы и переносы строк в примере добавлены для наглядности, при решении задачи их реализовывать не обязательно)
  */
-fun markdownToHtmlSimple(inputName: String, outputName: String) {
-    TODO()
+fun markdownToHtmlSimple(inputName: String, outputName: String) { //изучить
+    val tagSign = listOf("*", "**", "~")
+    val stack = mutableListOf(" ")
+    val usingTags = mutableListOf(false, false, false)
+    val outputStream = File(outputName).bufferedWriter()
+    val emptyList = mutableListOf<Boolean>()
+    outputStream.write("<html><body><p>")
+    for (line in File(inputName).readLines())
+        if (line.isNotEmpty())
+            emptyList.add(false)
+        else
+            emptyList.add(true)
+    emptyList.add(true)
+    for ((counter, line) in File(inputName).readLines().withIndex()) {
+        if (counter < emptyList.indexOf(false))
+            outputStream.write("")
+        else if (emptyList[counter] && !emptyList[counter + 1])
+            outputStream.write("</p><p>")
+        else if (emptyList[counter] && emptyList[counter + 1])
+            outputStream.write("")
+        else {
+            var i = 0
+            while (i < line.length) {
+                if (i < line.length - 1 && line[i] == line[i + 1] && line[i].toString() == tagSign[0]) {
+                    outputStream.write("<")
+                    if (stack.last() == tagSign[1]) {
+                        outputStream.write("/")
+                        stack.remove(stack.last())
+                        usingTags[1] = false
+                    } else {
+                        stack.add(tagSign[1])
+                        usingTags[1] = true
+                    }
+                    outputStream.write("b>")
+                    i++
+                } else if (line[i].toString() == tagSign[0]) {
+                    outputStream.write("<")
+                    if (stack.last() == tagSign[0]) {
+                        outputStream.write("/")
+                        stack.remove(stack.last())
+                        usingTags[0] = false
+                    } else {
+                        stack.add(tagSign[0])
+                        usingTags[0] = true
+                    }
+                    outputStream.write("i>")
+                } else if (i < line.length - 1 && line[i] == line[i + 1] && line[i].toString() == tagSign[2]) {
+                    outputStream.write("<")
+                    if (!usingTags[2])
+                        usingTags[2] = true
+                    else {
+                        outputStream.write("/")
+                        usingTags[2] = false
+                    }
+                    outputStream.write("s>")
+                    i++
+                } else
+                    outputStream.write(line[i].toString())
+                i++
+            }
+        }
+    }
+    outputStream.write("</p></body></html>")
+    outputStream.close()
 }
 
 /**
